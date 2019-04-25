@@ -160,18 +160,18 @@ class Signal:
         return plots.signal_basic(self, title, size, fig_opts, **kwargs)
 
     def create_renderers(self, fig, views=[], scale='time'):
-        views = self._views + views
-        if 'line' in views:
+        tviews = self._views + views
+        if 'line' in tviews:
             self.create_line_renderer(fig)
-        if 'spans' in views:
+        if 'spans' in tviews:
             self.create_span_renderers(fig, scale)
-        if 'stems' in views:
+        if 'stems' in tviews:
             self.create_stem_renderer(fig)
-        if 'noise' in views:
+        if 'noise' in tviews:
             self.create_noise_renderer(fig)
 
     def get_fig(self, title=None, size=(400,400), scale='2pi', views=[], fig_opts={}):
-        fig = self.create_fig(title, size, scale, fig_opts=fig_opts)
+        fig = self.create_fig(title=title, size=size, scale=scale, fig_opts=fig_opts)
         self.create_renderers(fig, views=views, scale=scale)
         return fig
 

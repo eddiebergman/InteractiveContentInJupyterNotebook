@@ -40,7 +40,7 @@ def scale_time(title='Time scaling', size=(400, 400), animated=False):
     sig1 = Signal(t, y)
     sig1.remove_view('spans')
 
-    fig = sig1.create_fig(title=title, size=size, scale='2pi')
+    fig = sig1.get_fig(title=title, size=size, scale='2pi')
 
     marker_source = ColumnDataSource({'x':[1, 1], 'y': [0, 1]})
     marker_ref = fig.line(x=[1,1], y=[0,1], line_width=2,
@@ -90,14 +90,14 @@ def add_functions(t, ft, gt, xt, animated=False):
         fig.y_range.start = y_min
         fig.y_range.end = y_max
 
-    fig_ft = sig_ft.create_fig(size=(800,300), title='f(t)', scale='time')
+    fig_ft = sig_ft.create_fig(size=(900,300), title='f(t)', scale='time')
     update_axis_range(fig_ft)
     fig_ft.xaxis.axis_label = 't'
     fig_ft.yaxis.axis_label = 'f(t)'
     sig_ft.update_line_opts({'line_color':'red'})
     sig_ft.create_renderers(fig_ft, ['line', 'stems'])
 
-    fig_gt = sig_gt.create_fig(size=(800,300), title='g(t)', scale='time')
+    fig_gt = sig_gt.create_fig(size=(900,300), title='g(t)', scale='time')
     update_axis_range(fig_gt)
     fig_gt.xaxis.axis_label = 't'
     fig_gt.yaxis.axis_label = 'g(t)'
@@ -105,7 +105,7 @@ def add_functions(t, ft, gt, xt, animated=False):
     sig_gt.update_stem_opts({'line_color':'green'})
     sig_gt.create_renderers(fig_gt, ['line', 'stems'])
 
-    fig_xt = sig_xt.create_fig(size=(1600,300), title='x(t)', scale='time')
+    fig_xt = sig_xt.create_fig(size=(1800,300), title='x(t)', scale='time')
     update_axis_range(fig_xt)
     fig_xt.xaxis.axis_label = 't'
     fig_xt.yaxis.axis_label = 'x(t)'
@@ -161,12 +161,15 @@ def sampling_a_signal(original_signal, hide_original=False):
     sampled_signal.update_stem_opts(sample_options)
 
     fig = original_signal.create_fig(size=(1920, 300), title="Sampling a Signal")
+    original_signal.create_line_renderer(fig)
     sampled_signal.create_stem_renderer(fig)
 
     fig2 = sampled_signal.create_fig(size=(1920, 300), title="Sampled Result")
 
     sampled_signal.create_line_renderer(fig2)
     if hide_original:
+        sampled_signal.create_stem_renderer(fig2)
+
         handle = show(fig2, notebook_handle=True)
     else:
         handle = show(column(fig,fig2), notebook_handle=True)
@@ -229,7 +232,7 @@ def aliases_figure(f0, fs):
     sig = Signal(t, y)
     alias_sig = Signal(t, y)
 
-    fig = sig.create_fig(size=(1080,300),title="Aliases of {} Hz signal".format(f0))
+    fig = sig.get_fig(size=(1080,300),title="Aliases of {} Hz signal".format(f0))
     alias_sig.update_line_opts({'line_color' : 'orange', 'line_alpha': 1})
     alias_sig.create_line_renderer(fig)
 
